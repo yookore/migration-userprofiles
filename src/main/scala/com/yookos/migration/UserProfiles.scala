@@ -57,8 +57,7 @@ object UserProfiles extends App {
   //var count = 0
   var count = new java.util.concurrent.atomic.AtomicInteger(0)
   val totalLegacyUsers = 2124155L
-  val cachedIndex = 
-    if (cache.get("latest_legacy_files_index") == None) 0 else cache.get[Int]("latest_legacy_files_index").get
+  var cachedIndex = if (cache.get("latest_legacy_profiles_index") == None) 0 else cache.get[Int]("latest_legacy_profiles_index").get
 
   val usersdf = sqlContext.load("jdbc", Map(
     "url" -> Config.dataSourceUrl(mode, Some("mappings")),
@@ -68,8 +67,6 @@ object UserProfiles extends App {
 
   //val profilesRDD = sc.cassandraTable[Profile]("yookore", "legacyuserprofiles").cache()
   //val totalProfiles = profilesRDD.cassandraCount()
-
-  // current profiles in Cassandra is 1648029
 
   val df = usersdf.select(
     usersdf("id"), usersdf("username"),
@@ -84,9 +81,9 @@ object UserProfiles extends App {
   protected def reduce(df: DataFrame) = {
     df.collect().foreach(row => {
       println("===userids=== " + row(0))
-      //count += 1
-      count.incrementAndGet()
-      cache.set("latest_legacy_files_index", count)
+      //count.incrementAndGet()
+      cachedIndex = cachedIndex + 1
+      cache.set("latest_legacy_profiles_index", cachedIndex)
       upsert(row)
     })
   }
@@ -135,7 +132,7 @@ object UserProfiles extends App {
         "imageurl", "homeaddress", "location")
       )
 
-        println("===Latest cachedIndex=== " + cache.get[Int]("latest_legacy_files_index").get)
+        println("===Latest cachedIndex=== " + cache.get[Int]("latest_legacy_profiles_index").get)
   }
 
   def createSchema(conf: SparkConf): Boolean = {

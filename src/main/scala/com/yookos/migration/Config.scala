@@ -143,7 +143,7 @@ object Config {
       val nodes = Array(
           ClusterNode("yks-redis01.mid.cpwv.com", "192.168.121.165", 6379),
           ClusterNode("yks-redis02.mid.cpwv.com", "192.168.121.166", 6379),
-          ClusterNode("yks-redis04.mid.cpwv.com", "192.168.121.168", 6379)
+          ClusterNode("yks-redis04.mid.cpwv.com", "192.168.121.167", 6379)
         )
       val r = new RedisCluster(new WrappedArray.ofRef(nodes): _*) {
         val keyTag = Some(RegexKeyTag)
@@ -174,8 +174,8 @@ object Config {
 
     case "beta" =>
       val dbSourceName = name.getOrElse("")
-      val mappings = s"jdbc:postgresql://192.168.121.164:5432/uaa?user=postgres&password=postgres"
-      val legacy = s"jdbc:postgresql://192.168.10.225:5432/yookos?user=postgres&password=postgres"
+      val mappings = s"jdbc:postgresql://192.168.121.178:5432/uaa?user=postgres&password=postgres"
+      val legacy = s"jdbc:postgresql://192.168.121.164:5432/yookos?user=postgres&password=postgres"
       if (dbSourceName == "mappings") mappings else legacy
 
   }
