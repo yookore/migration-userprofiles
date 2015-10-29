@@ -108,7 +108,7 @@ object Config {
       //conf.set("spark.driver.maxResultSize", "0")
       //conf.set("spark.driver.memory", "2g")
       //conf.set("spark.executor.memory", "6g")
-      conf.set("spark.cassandra.connection.host", "192.168.121.171")
+      conf.set("spark.cassandra.connection.host", "192.168.121.174")
       conf.set("spark.cassandra.auth.username", "cassandra")
       conf.set("spark.cassandra.auth.password", "Gonzo@7072")
 
